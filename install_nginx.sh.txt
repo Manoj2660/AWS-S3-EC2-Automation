@@ -1,0 +1,15 @@
+#!/bin/bash
+# System update aur Nginx install karne ke liye
+yum update -y
+yum install nginx -y
+
+# Nginx service start aur enable (boot pe auto-start) karne ke liye
+systemctl start nginx
+systemctl enable nginx
+
+# S3 bucket se files ko Nginx ke folder mein sync karne ke liye
+# Yaad rakhna: 'aws-core-1' tumhara sahi bucket name hai
+aws s3 sync s3://aws-core-1 /usr/share/nginx/html/
+
+# Files ki permission set karo taaki browser unhe read kar sake
+chmod -R 755 /usr/share/nginx/html/
